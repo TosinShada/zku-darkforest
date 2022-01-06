@@ -14,6 +14,7 @@ contract DarkForestCore {
     IVerifier public immutable verifier;
 
     address public owner;
+    // A struct of the player to hold the current location hash and an expiry timestamp of 5mins
     struct Player {
         uint256 location;
         uint256 expiry;
@@ -22,7 +23,8 @@ contract DarkForestCore {
     uint256 index;
     Player[] players;
 
-    mapping (uint256 => uint) locationTaken;
+    // We will map the location hash to the player struct in order to validate whether a particular location already has a player in it
+    mapping (uint256 => Player) locationTaken;
 
     event PlayerInitialized(address player, uint256 loc);
 
@@ -50,32 +52,31 @@ contract DarkForestCore {
         );
 
         uint256 _location = _input[0];
-        uint256 playerExist = locationTaken[_location];
 
+        emit PlayerInitialized(msg.sender, _location);
+        // This assertion will confirm if the location is already taken by an existing player
         require(
-            playerExist != 0,
+            locationTaken[_location].location == 0,
             "A player exist in this location"
         );
+        // This assertion will use the expiry timestamp to confirm if a player was in this location in the last five minutes however once the first assertion passes this one can't fail unless the players can move from their present location
+        // require(
+        //     locationTaken[_location].expiry <= block.timestamp,
+        //     "A player is currently in this location"
+        // );
 
         uint256 expiry = block.timestamp + 300;
         Player memory player = Player(_location, expiry, true);
         players.push(player);
-        index = players.length;
-        locationTaken[_location] = index;
-
-        //emit PlayerInitialized(msg.sender, _location);
+        locationTaken[_location] = player;
     }
 
     function GetPlayerCount() view public returns (uint) {
         return players.length;
     }
 
-    function GetPlayerIndex(uint256 _location) view public returns (uint) {
-        return locationTaken[_location] - 1;
-    }
-
-    function GetPlayer(uint256 _playerIndex) view public returns (uint256 location, uint256 expiry) {
-        Player storage player = players[_playerIndex];
+    function GetPlayer(uint256 _location) view public returns (uint256 location, uint256 expiry) {
+        Player storage player = locationTaken[_location];
 
         return (player.location, player.expiry);
     }

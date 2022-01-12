@@ -10,7 +10,6 @@ template Main(length) {
     signal input y;
     signal input maxR;
     signal input minR;
-    signal input HASH_KEY;
 
     signal output pub;
 
@@ -48,7 +47,7 @@ template Main(length) {
 
     mimc.ins[0] <== x;
     mimc.ins[1] <== y;
-    mimc.k <== HASH_KEY;
+    mimc.k <== 0;
 
     pub <== mimc.outs[0];
 
@@ -56,16 +55,6 @@ template Main(length) {
     component gcdCheck = GCD();
     gcdCheck.in1 <== x;
     gcdCheck.in2 <== y;
-
-    // Check that the location hash hasnt been spawned to in the last 5 minutes
-    // component checkLocation = NotInSet(length);
-    // checkLocation.element <== mimc.outs[0];
-    
-    // for (var i = 0; i < length; i++) {
-    //     checkLocation.set[i] <== lastSpawned[i];
-    // }
-
-    // checkLocation.out === 1;
 }
 
-component main {public [maxR,minR,HASH_KEY]} = Main(10);
+component main {public [maxR,minR]} = Main(10);

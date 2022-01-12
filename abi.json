@@ -15,6 +15,25 @@
 		"inputs": [
 			{
 				"indexed": false,
+				"internalType": "uint256",
+				"name": "loc",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "resources",
+				"type": "uint256"
+			}
+		],
+		"name": "PlanetInitialized",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
 				"internalType": "address",
 				"name": "player",
 				"type": "address"
@@ -75,12 +94,66 @@
 				"type": "uint256[2]"
 			},
 			{
+				"internalType": "uint256[3]",
+				"name": "_input",
+				"type": "uint256[3]"
+			}
+		],
+		"name": "initializePlayer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256[4]",
 				"name": "_input",
 				"type": "uint256[4]"
 			}
 		],
-		"name": "initializePlayer",
+		"name": "initializePlanet",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256[2]",
+				"name": "_a",
+				"type": "uint256[2]"
+			},
+			{
+				"internalType": "uint256[2][2]",
+				"name": "_b",
+				"type": "uint256[2][2]"
+			},
+			{
+				"internalType": "uint256[2]",
+				"name": "_c",
+				"type": "uint256[2]"
+			},
+			{
+				"internalType": "uint256[4]",
+				"name": "_input",
+				"type": "uint256[4]"
+			}
+		],
+		"name": "move",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mineResources",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -100,18 +173,41 @@
 		"constant": true
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "GetAllPlayers",
+		"outputs": [
 			{
-				"internalType": "uint256",
-				"name": "_location",
-				"type": "uint256"
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
 			}
 		],
-		"name": "GetPlayerIndex",
+		"stateMutability": "view",
+		"type": "function",
+		"constant": true
+	},
+	{
+		"inputs": [],
+		"name": "GetPlayer",
 		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "location",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "initExpiry",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "pendingResources",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "resources",
 				"type": "uint256"
 			}
 		],
@@ -123,20 +219,15 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_playerIndex",
+				"name": "_index",
 				"type": "uint256"
 			}
 		],
-		"name": "GetPlayer",
+		"name": "GetPlanet",
 		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "location",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "expiry",
+				"name": "resources",
 				"type": "uint256"
 			}
 		],
